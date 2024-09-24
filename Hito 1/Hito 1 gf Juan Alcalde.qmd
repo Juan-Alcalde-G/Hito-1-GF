@@ -193,11 +193,12 @@ A continuación, se presenta un gráfico que muestra la comparación entre las v
 # Generación de gráfico comparativo
 K_values <- seq(4000, 13000, by = 50)
 bs_prices <- sapply(K_values, function(K) bs_call_price(S, K, T, r, sigma))
-binomial_prices <- sapply(K_values, function(K) binomial_call_price(S, K, T, r, sigma, n))
+binomial_prices <- sapply(K_values, function(K) binomial_option_pricing(S, K, T, r, sigma, N))
 
 plot(K_values, bs_prices, type = "l", col = "blue", lwd = 2, ylab = "Precio de la opción", xlab = "Precio de ejercicio (K)", main = "Comparación entre Black-Scholes y Binomial")
 lines(K_values, binomial_prices, col = "red", lwd = 2)
 legend("topright", legend = c("Black-Scholes", "Binomial"), col = c("blue", "red"), lty = 1, lwd = 2)
+
 ```
 
 Este gráfico ilustra cómo las valoraciones de las opciones varían con el precio de ejercicio según cada modelo, demostrando que, a pesar de sus diferencias metodológicas, ambos modelos proporcionan resultados que están en estrecha concordancia.
@@ -215,5 +216,3 @@ Este estudio resalta la relevancia de los ETFs y las acciones como herramientas 
 ## 5. Bibliografía
 
 Brooks, C., & Kat, H. M. (2002). The statistical properties of hedge fund index returns and their implications for investors. Journal of Financial and Quantitative Analysis, 37(2), 241-272. Hull, J. C. (2015). Options, Futures, and Other Derivatives (9th ed.). Pearson. Kose, M. A., & Prasad, E. (2011). Globalization of Financial Markets and Its Impact on Emerging Market Economies. Journal of Economic Perspectives, 25(1), 77-100. Mishkin, F. S. (2019). The Economics of Money, Banking, and Financial Markets. Pearson. Rubinstein, M. (1994). Implied Binomial Trees. Journal of Finance, 49(3), 771-818.
-
-probando pa
