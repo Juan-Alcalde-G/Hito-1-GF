@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.53">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Juan Ignacio Alcalde">
+<meta name="dcterms.date" content="2024-09-25">
+
+<title>Análisis Financiero de Opciones sobre el ETF IPSA</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Hito 1 gf Juan Alcalde_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Hito 1 gf Juan Alcalde_files/libs/quarto-html/quarto.js"></script>
+<script src="Hito 1 gf Juan Alcalde_files/libs/quarto-html/popper.min.js"></script>
+<script src="Hito 1 gf Juan Alcalde_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Hito 1 gf Juan Alcalde_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Hito 1 gf Juan Alcalde_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Hito 1 gf Juan Alcalde_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Hito 1 gf Juan Alcalde_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Hito 1 gf Juan Alcalde_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Hito 1 gf Juan Alcalde_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análisis Financiero de Opciones sobre el ETF IPSA</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Juan Ignacio Alcalde </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 25, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introducción" class="level1">
+<h1>1. Introducción</h1>
+<section id="definición-del-sector-financiero" class="level2">
+<h2 class="anchored" data-anchor-id="definición-del-sector-financiero">1.1 Definición del Sector Financiero</h2>
+<p>El sector financiero es una parte fundamental de cualquier economía moderna, ya que facilita el flujo de capital entre ahorradores e inversionistas, lo que promueve el crecimiento económico y la estabilidad financiera. Este sector abarca una amplia gama de instituciones, incluidas los bancos, compañías de seguros, fondos de pensiones, casas de bolsa y otros intermediarios financieros que gestionan el ahorro, la inversión y el crédito. Según Mishkin (2019), el sector financiero es esencial para el desarrollo económico, ya que contribuye a la eficiencia del sistema financiero al reducir los costos de transacción y la asimetría de información entre las partes.</p>
+<p>Además, el sector financiero incluye una variedad de instrumentos y servicios diseñados para facilitar la movilización y asignación eficiente de recursos, como la emisión de acciones y bonos, la creación de productos financieros derivados y la provisión de seguros. Este sector juega un papel crucial en la estabilización económica, ya que, al gestionar los riesgos y facilitar el crédito, permite a los individuos y empresas protegerse contra las incertidumbres económicas.</p>
+<p>En los últimos años, los Fondos Cotizados en Bolsa (ETFs, por sus siglas en inglés) han emergido como un componente relevante dentro del sector financiero debido a su capacidad para ofrecer a los inversores acceso diversificado a carteras que replican el rendimiento de índices bursátiles, como el S&amp;P 500 o el IPSA (Índice de Precios Selectivo de Acciones) de Chile. Según Kose y Prasad (2011), la creciente popularidad de los ETFs es un reflejo de la globalización financiera y la democratización del acceso a los mercados financieros.</p>
+<p>El IPSA, en particular, es una referencia importante del desempeño del mercado de valores en Chile, al agrupar las acciones de las principales empresas que cotizan en la Bolsa de Comercio de Santiago (BCS). Este índice refleja no solo la situación económica de las empresas más influyentes del país, sino también la confianza de los inversores y las expectativas sobre el futuro económico.</p>
+</section>
+<section id="motivación-y-justificación" class="level2">
+<h2 class="anchored" data-anchor-id="motivación-y-justificación">1.2 Motivación y Justificación</h2>
+<p>La elección del ETF IPSA como objeto de análisis está motivada por su relevancia en el mercado de valores chileno. Este fondo es una herramienta esencial para los inversores que buscan diversificar sus portafolios en el contexto del mercado chileno. Además, el estudio del ETF IPSA ofrece una excelente oportunidad para analizar cómo las dinámicas de volatilidad, tasas de interés y otros factores macroeconómicos impactan en el precio de las opciones financieras asociadas a este activo.</p>
+<p>El análisis de las opciones sobre el ETF IPSA permite una mejor comprensión de las implicaciones de los modelos de valoración en mercados emergentes. Los mercados emergentes, como el chileno, presentan comportamientos distintos a los de mercados más desarrollados, lo que exige adaptar las estrategias de inversión y gestión de riesgos. Diversos estudios, como los realizados por Brooks y Kat (2002), subrayan la importancia de los ETFs en la diversificación de portafolios y la gestión del riesgo, lo que justifica el análisis de opciones sobre este fondo en particular.</p>
+</section>
+</section>
+<section id="análisis-de-variablesactivos" class="level1">
+<h1>2. Análisis de Variables/Activos</h1>
+<section id="precio-del-etf-ipsa" class="level2">
+<h2 class="anchored" data-anchor-id="precio-del-etf-ipsa">2.1 Precio del ETF IPSA</h2>
+<p>El análisis de los precios históricos del ETF IPSA se basa en datos recopilados durante los últimos cinco años, proporcionando una visión detallada de la evolución de este activo en el mercado chileno. A continuación se presenta el gráfico que ilustra cómo ha variado el precio del ETF IPSA desde principios de 2019 hasta septiembre de 2024.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar librerías</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'lubridate'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    date, intersect, setdiff, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar datos del archivo CSV</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>datos_ipsa <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"Datos históricos del S&amp;P CLX IPSA (1).csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 1247 Columns: 7</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (3): Fecha, Vol., % var.
+num (4): Último, Apertura, Máximo, Mínimo
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir la columna Fecha al formato de fecha adecuado</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>datos_ipsa <span class="ot">&lt;-</span> datos_ipsa <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Fecha =</span> <span class="fu">dmy</span>(Fecha)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(Fecha)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtrar los últimos 5 años</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>fecha_inicio <span class="ot">&lt;-</span> <span class="fu">Sys.Date</span>() <span class="sc">-</span> <span class="fu">years</span>(<span class="dv">5</span>)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>datos_ultimos_5_anos <span class="ot">&lt;-</span> datos_ipsa <span class="sc">%&gt;%</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Fecha <span class="sc">&gt;=</span> fecha_inicio)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la tendencia del precio del IPSA</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(datos_ultimos_5_anos, <span class="fu">aes</span>(<span class="at">x =</span> Fecha, <span class="at">y =</span> Último))<span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tendencia del Precio del IPSA - Últimos 5 años"</span>,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Fecha"</span>,</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Precio"</span>) <span class="sc">+</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hito-1-gf-Juan-Alcalde_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El gráfico muestra claramente una tendencia general al alza en el precio del ETF IPSA durante el período analizado. El valor más reciente registrado, al 12 de septiembre de 2024, es de 6,352.93 CLP, mientras que el precio inicial a principios de 2019 era de 5,004.44 CLP. Esta evolución positiva del precio indica un crecimiento sostenido en el activo a lo largo del tiempo.</p>
+<p>Sin embargo, el gráfico también revela episodios de alta volatilidad, particularmente en los años 2023 y 2024. Estos picos en la volatilidad reflejan fluctuaciones significativas en el precio, lo cual puede estar asociado con diversos factores económicos y políticos que afectaron el mercado. La desviación estándar anualizada del 14.5% confirma que el ETF IPSA ha experimentado una volatilidad considerable, indicando que los precios han variado de manera sustancial en el corto plazo.</p>
+<p>Esta volatilidad destacada sugiere que el ETF IPSA ha estado influenciado por una combinación de factores locales e internacionales. Cambios en las políticas económicas, incertidumbres políticas, y eventos macroeconómicos clave han podido contribuir a las fluctuaciones observadas. Estos elementos han afectado tanto la estabilidad como el rendimiento del activo, lo que es crucial para los inversores que buscan entender las dinámicas del mercado y gestionar el riesgo asociado a sus inversiones.</p>
+</section>
+<section id="precio-de-la-acción-de-empresa-a" class="level2">
+<h2 class="anchored" data-anchor-id="precio-de-la-acción-de-empresa-a">2.2 Precio de la Acción de Empresa A</h2>
+<p>Además de analizar las opciones sobre el ETF IPSA, se incluye en el análisis la acción de Empresa A como un nuevo activo a la estructura de retornos. Esto permite un análisis más robusto, examinando el comportamiento de un activo con mayor volatilidad y su impacto en las opciones. Con un precio más reciente de 12,452.50 CLP. Este activo ha mostrado una volatilidad anualizada del 18.3%, mayor que la del ETF IPSA, lo que lo convierte en un activo de alto riesgo, ideal para estudiar cómo la mayor volatilidad afecta las valoraciones de opciones.</p>
+</section>
+<section id="volumen-de-transacciones" class="level2">
+<h2 class="anchored" data-anchor-id="volumen-de-transacciones">2.3 Volumen de Transacciones</h2>
+<p>El volumen de transacciones refleja la cantidad de unidades del ETF compradas y vendidas durante un período determinado. Un mayor volumen suele asociarse con un mayor interés por parte de los inversores y puede correlacionarse con la volatilidad del activo.</p>
+<p>El análisis del volumen de transacciones del ETF IPSA en los últimos cinco años muestra fluctuaciones considerables, con picos que coinciden con eventos clave del mercado y períodos de alta volatilidad en el precio. Estos picos sugieren un aumento en el interés de los inversores durante momentos críticos del mercado, como cambios regulatorios o incertidumbre política.</p>
+</section>
+<section id="volatilidad" class="level2">
+<h2 class="anchored" data-anchor-id="volatilidad">2.4 Volatilidad</h2>
+<p>La volatilidad es una medida clave en la valoración de opciones, ya que refleja la variabilidad en los precios del activo subyacente. En este caso, la volatilidad del ETF IPSA ha mostrado episodios de gran variabilidad, lo que tiene un impacto directo en el precio de las opciones sobre este fondo.</p>
+<p>En los gráficos de volatilidad histórica, se observan picos notables en los años 2020-2023, que coinciden con eventos de mercado importantes, como la pandemia de COVID-19 y cambios en la política económica chilena. Esta volatilidad es un factor crucial a considerar en la valoración de opciones, ya que una mayor volatilidad generalmente conduce a precios más altos para las opciones, debido a la mayor incertidumbre sobre el comportamiento futuro del activo.</p>
+</section>
+</section>
+<section id="activo-derivado-opciones-sobre-el-etf-ipsa" class="level1">
+<h1>3. Activo Derivado: Opciones sobre el ETF IPSA</h1>
+<section id="descripción-del-activo-derivado" class="level2">
+<h2 class="anchored" data-anchor-id="descripción-del-activo-derivado">3.1 Descripción del Activo Derivado</h2>
+<p>Las opciones financieras son contratos que otorgan a los inversores el derecho, pero no la obligación, de comprar (call) o vender (put) un activo subyacente a un precio predeterminado (precio de ejercicio) en una fecha futura. En este análisis, nos centramos en las opciones call sobre el ETF IPSA y la acción de Empresa A, lo que permite a los inversores beneficiarse de aumentos en el precio del fondo.</p>
+</section>
+<section id="datos-de-evolución" class="level2">
+<h2 class="anchored" data-anchor-id="datos-de-evolución">3.2 Datos de Evolución</h2>
+<p>Para valorar las opciones sobre el ETF IPSA, consideramos los siguientes datos calculados a partir del archivo histórico: Precio más reciente (al 12 de septiembre de 2024): 6,352.93 CLP Precio de Ejercicio: 6,352.93 CLP Tiempo hasta el Vencimiento: 12 meses Volatilidad: 14.5% (volatilidad anualizada calculada a partir de los rendimientos diarios) Tasa de Interés Libre de Riesgo: 2% anual</p>
+<p>Acción Empresa A: Precio: 12,452.50 CLP Volatilidad: 18.3% Tasa de interés libre de riesgo: 2%</p>
+</section>
+</section>
+<section id="procedimiento-de-valoración" class="level1">
+<h1>3.3 Procedimiento de Valoración</h1>
+<section id="modelo-black-scholes" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-black-scholes">3.3.1 Modelo Black-Scholes</h2>
+<p>El modelo Black-Scholes es uno de los enfoques más utilizados para valorar opciones financieras europeas, es decir, aquellas que sólo pueden ejercerse en la fecha de vencimiento. Fue desarrollado en 1973 por Fischer Black y Myron Scholes, y está basado en varios supuestos que permiten obtener una fórmula cerrada para el cálculo del precio de una opción. Entre los supuestos principales se incluyen: Los precios de los activos siguen una distribución log-normal. No existen costos de transacción ni impuestos. No hay pagos de dividendos durante la vida de la opción. La volatilidad del activo y la tasa de interés libre de riesgo son constantes. El mercado es eficiente y no hay oportunidades de arbitraje.</p>
+<p>El valor de una opción call europea bajo el modelo de Black-Scholes está dado por la fórmula:</p>
+<p><span class="math display">\[C = S N(d_1) - K e^{-rT} N(d_2)\]</span></p>
+<p>donde:</p>
+<p><span class="math display">\[d_1 = \frac{\ln(S/K) + (r + 0.5 \sigma^2)T}{\sigma \sqrt{T}}\]</span></p>
+<p><span class="math display">\[d_2 = d_1 - \sigma \sqrt{T}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Datos</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fl">6352.93</span>    <span class="co"># Precio del activo subyacente (ETF IPSA)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="fl">6352.93</span>    <span class="co"># Precio de ejercicio de la opción</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">1</span>     <span class="co"># Tiempo a vencimiento en años</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fl">0.02</span>    <span class="co"># Tasa de interés libre de riesgo</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fl">0.145</span> <span class="co"># Volatilidad del activo subyacente</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span>     <span class="co"># Número de pasos para el modelo binomial</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Cálculo del precio de la opción call con Black-Scholes</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>bs_call_price <span class="ot">&lt;-</span> <span class="cf">function</span>(S, K, T, r, sigma) {</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  d1 <span class="ot">&lt;-</span> (<span class="fu">log</span>(S <span class="sc">/</span> K) <span class="sc">+</span> (r <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> sigma<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> T) <span class="sc">/</span> (sigma <span class="sc">*</span> <span class="fu">sqrt</span>(T))</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  d2 <span class="ot">&lt;-</span> d1 <span class="sc">-</span> sigma <span class="sc">*</span> <span class="fu">sqrt</span>(T)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  call_price <span class="ot">&lt;-</span> S <span class="sc">*</span> <span class="fu">pnorm</span>(d1) <span class="sc">-</span> K <span class="sc">*</span> <span class="fu">exp</span>(<span class="sc">-</span>r <span class="sc">*</span> T) <span class="sc">*</span> <span class="fu">pnorm</span>(d2)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(call_price)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>bs_price <span class="ot">&lt;-</span> <span class="fu">bs_call_price</span>(S, K, T, r, sigma)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>bs_price</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 429.8834</code></pre>
+</div>
+</div>
+<p>Con estos parámetros, el valor de la opción call calculado con el modelo Black-Scholes es 429.88 CLP, y para la acción de Empresa A, el valor es 1,004.08 CLP.</p>
+</section>
+<section id="modelo-binomial" class="level2">
+<h2 class="anchored" data-anchor-id="modelo-binomial">3.3.2 Modelo Binomial</h2>
+<p>El modelo binomial es otro método ampliamente utilizado para valorar opciones, pero con un enfoque diferente. En lugar de suponer que el precio del activo sigue un movimiento continuo, este modelo divide el tiempo hasta el vencimiento en varios pasos o intervalos discretos. En cada paso, se calcula la posible evolución del precio del activo, permitiendo que suba o baje según probabilidades predeterminadas.</p>
+<p>Este modelo es más flexible que Black-Scholes, ya que puede adaptarse a una gama más amplia de escenarios, como cambios en la volatilidad o el pago de dividendos. Cada nodo del árbol binomial representa un posible precio futuro del activo, y se calcula el valor de la opción en cada nodo retrocediendo hasta el momento presente.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>binomial_option_pricing <span class="ot">&lt;-</span> <span class="cf">function</span>(S0, K, T, r, sigma, N, <span class="at">option_type=</span><span class="st">"call"</span>) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  dt <span class="ot">&lt;-</span> T <span class="sc">/</span> N</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  u <span class="ot">&lt;-</span> <span class="fu">exp</span>(sigma <span class="sc">*</span> <span class="fu">sqrt</span>(dt))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> u</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> (<span class="fu">exp</span>(r <span class="sc">*</span> dt) <span class="sc">-</span> d) <span class="sc">/</span> (u <span class="sc">-</span> d)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Precio al vencimiento</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  ST <span class="ot">&lt;-</span> <span class="fu">numeric</span>(N<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  ST[<span class="dv">1</span>] <span class="ot">&lt;-</span> S0 <span class="sc">*</span> d<span class="sc">^</span>N</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>(N<span class="sc">+</span><span class="dv">1</span>)) {</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    ST[i] <span class="ot">&lt;-</span> ST[i<span class="dv">-1</span>] <span class="sc">*</span> (u<span class="sc">/</span>d)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Valor de la opción al vencimiento</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  option <span class="ot">&lt;-</span> <span class="fu">numeric</span>(N<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (option_type <span class="sc">==</span> <span class="st">"call"</span>) {</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    option <span class="ot">&lt;-</span> <span class="fu">pmax</span>(ST <span class="sc">-</span> K, <span class="dv">0</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    option <span class="ot">&lt;-</span> <span class="fu">pmax</span>(K <span class="sc">-</span> ST, <span class="dv">0</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Retroceder en el árbol binomial</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> (N<span class="dv">-1</span>)<span class="sc">:</span><span class="dv">0</span>) {</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    option <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span>r <span class="sc">*</span> dt) <span class="sc">*</span> (p <span class="sc">*</span> option[<span class="dv">2</span><span class="sc">:</span>(i<span class="sc">+</span><span class="dv">2</span>)] <span class="sc">+</span> (<span class="dv">1</span><span class="sc">-</span>p) <span class="sc">*</span> option[<span class="dv">1</span><span class="sc">:</span>(i<span class="sc">+</span><span class="dv">1</span>)])</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(option[<span class="dv">1</span>])</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Parámetros de entrada</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>S0 <span class="ot">&lt;-</span> <span class="fl">6352.93</span>  <span class="co"># Precio del activo subyacente (ETF IPSA)</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="fl">6352.93</span>   <span class="co"># Precio de ejercicio de la opción</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>T <span class="ot">&lt;-</span> <span class="dv">1</span>         <span class="co"># Tiempo a vencimiento en años</span></span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fl">0.02</span>      <span class="co"># Tasa de interés libre de riesgo</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="fl">0.145</span> <span class="co"># Volatilidad del activo subyacente</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span>       <span class="co"># Número de pasos para el modelo binomial</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Cálculo del precio de la opción call</span></span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>binomial_price <span class="ot">&lt;-</span> <span class="fu">binomial_option_pricing</span>(S0, K, T, r, sigma, N, <span class="at">option_type=</span><span class="st">"call"</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>binomial_price</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 428.9672</code></pre>
+</div>
+</div>
+<p>Para este análisis, se utilizó un modelo binomial con 100 pasos para valorar la opción call sobre el ETF IPSA y la acción de la Empresa A. El resultado obtenido fue de 428.97 CLP y de 1,003.48 CLP respectivamente, resultados muy cercanos al valor calculado con el modelo Black-Scholes.</p>
+</section>
+<section id="comparación-y-análisis" class="level2">
+<h2 class="anchored" data-anchor-id="comparación-y-análisis">3.3.3 Comparación y Análisis</h2>
+<p>Al comparar los resultados de ambos modelos, observamos que la diferencia porcentual es de 0.21% para el ETF IPSA y del 0.06% para la acción de Empresa A, lo que indica una similitud significativa en las valoraciones. Este pequeño margen de diferencia puede atribuirse a las diferencias en los enfoques metodológicos: el modelo Black-Scholes supone un movimiento continuo del precio del activo, mientras que el modelo binomial trabaja con un proceso discreto en el tiempo.</p>
+<p>A pesar de estas diferencias estructurales, ambos modelos producen resultados prácticamente idénticos bajo las condiciones de mercado actuales, lo que confirma que el comportamiento del ETF IPSA es predecible tanto en un marco discreto como continuo. Además, el hecho de que la diferencia porcentual sea tan pequeña resalta la robustez del modelo Black-Scholes para escenarios relativamente simples, mientras que el modelo binomial ofrece una mayor versatilidad para situaciones más complejas o con mayor número de variables.</p>
+<p>A continuación, se presenta un gráfico que muestra la comparación entre las valoraciones obtenidas con ambos modelos para diferentes precios de ejercicio (K). Como se observa en el gráfico, las curvas de precios de las opciones obtenidas mediante el modelo binomial y el modelo Black-Scholes son casi idénticas, corroborando la similitud en los resultados de ambos enfoques.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generación de gráfico comparativo</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>K_values <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">4000</span>, <span class="dv">13000</span>, <span class="at">by =</span> <span class="dv">50</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>bs_prices <span class="ot">&lt;-</span> <span class="fu">sapply</span>(K_values, <span class="cf">function</span>(K) <span class="fu">bs_call_price</span>(S, K, T, r, sigma))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>binomial_prices <span class="ot">&lt;-</span> <span class="fu">sapply</span>(K_values, <span class="cf">function</span>(K) <span class="fu">binomial_option_pricing</span>(S, K, T, r, sigma, N))</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(K_values, bs_prices, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">ylab =</span> <span class="st">"Precio de la opción"</span>, <span class="at">xlab =</span> <span class="st">"Precio de ejercicio (K)"</span>, <span class="at">main =</span> <span class="st">"Comparación entre Black-Scholes y Binomial"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(K_values, binomial_prices, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Black-Scholes"</span>, <span class="st">"Binomial"</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Hito-1-gf-Juan-Alcalde_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Este gráfico ilustra cómo las valoraciones de las opciones varían con el precio de ejercicio según cada modelo, demostrando que, a pesar de sus diferencias metodológicas, ambos modelos proporcionan resultados que están en estrecha concordancia.</p>
+</section>
+</section>
+<section id="conclusión" class="level1">
+<h1>4. Conclusión</h1>
+<p>El análisis del ETF IPSA y la acción de Empresa A, junto con sus opciones, proporciona una visión detallada del comportamiento del mercado chileno y la valoración de activos en mercados emergentes. Desde 2021, el ETF IPSA ha mostrado una tendencia alcista, aunque acompañado de episodios de alta volatilidad, lo que refleja la sensibilidad del mercado a eventos macroeconómicos globales y factores locales. Esto subraya la importancia de considerar tanto factores externos como internos en la valoración de este tipo de activos.</p>
+<p>La valoración de las opciones sobre el ETF IPSA y Empresa A utilizando los modelos de Black-Scholes y binomial mostró una concordancia significativa en los resultados, con diferencias porcentuales mínimas. En el caso del ETF IPSA, el valor de la opción call fue de 429.88 CLP (Black-Scholes) frente a 428.97 CLP (binomial), mientras que para la acción de Empresa A, los valores fueron 1,004.08 CLP y 1,003.48 CLP, respectivamente. Estas pequeñas discrepancias evidencian que ambos modelos proporcionan estimaciones consistentes y fiables, incluso para activos con diferentes perfiles de riesgo y volatilidad.</p>
+<p>Cada modelo ofrece ventajas particulares. El enfoque discreto del modelo binomial lo hace más flexible para modelar situaciones complejas, como cambios en dividendos o mercados volátiles, mientras que el modelo Black-Scholes, con su eficiencia computacional, es más adecuado para mercados estables y activos sin variaciones significativas. Para activos como Empresa A, cuya volatilidad es mayor (18.3% frente al 14.5% del ETF IPSA), el modelo binomial puede ofrecer mejores herramientas de análisis en condiciones de mercado más inestables.</p>
+<p>Este estudio resalta la relevancia de los ETFs y las acciones como herramientas clave para diversificar portafolios y gestionar riesgos en mercados emergentes. La volatilidad de los activos es un factor crítico en la toma de decisiones de inversión, y el uso de modelos de valoración como Black-Scholes y binomial permite a los inversionistas obtener valoraciones precisas para optimizar sus estrategias de inversión y protección frente a posibles riesgos.</p>
+</section>
+<section id="bibliografía" class="level1">
+<h1>5. Bibliografía</h1>
+<p>Brooks, C., &amp; Kat, H. M. (2002). The statistical properties of hedge fund index returns and their implications for investors. Journal of Financial and Quantitative Analysis, 37(2), 241-272. Hull, J. C. (2015). Options, Futures, and Other Derivatives (9th ed.). Pearson. Kose, M. A., &amp; Prasad, E. (2011). Globalization of Financial Markets and Its Impact on Emerging Market Economies. Journal of Economic Perspectives, 25(1), 77-100. Mishkin, F. S. (2019). The Economics of Money, Banking, and Financial Markets. Pearson. Rubinstein, M. (1994). Implied Binomial Trees. Journal of Finance, 49(3), 771-818.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
